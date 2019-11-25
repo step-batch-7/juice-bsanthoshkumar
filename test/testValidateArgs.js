@@ -12,7 +12,7 @@ describe("isNumber", function() {
   });
 });
 
-describe("validateSavaArgs", function() {
+describe("validateSaveArgs", function() {
   it("should return true for valid quantity args", function() {
     assert.strictEqual(validateSaveArgs(["--qty", 2]), true);
   });

@@ -7,7 +7,7 @@ const main = function(args) {
   const writeFile = fs.writeFileSync;
   const existFile = fs.existsSync;
   console.log(
-    executeArgs(args.slice(2), path, readFile, writeFile, existFile, date)
+    executeArgs(args.slice(2), path, readFile, existFile, writeFile, date)
   );
 };
 

@@ -4,8 +4,8 @@ const saveTransaction = function(
   newTransaction,
   path,
   readFile,
-  writeFile,
-  existFile
+  existFile,
+  writeFile
 ) {
   let beverageTransactions = { table: [] };
   if (!existFile(path)) {
@@ -20,20 +20,20 @@ const saveBeverageTransaction = function(
   args,
   path,
   readFile,
-  writeFile,
   existFile,
+  writeFile,
   date
 ) {
   const newTransaction = {
     "Employee ID": +args[3],
     Beverage: args[1],
     Quantity: +args[5],
-    time: date()
+    Date: date()
   };
   const keys = Object.keys(newTransaction);
   const values = Object.values(newTransaction);
   const result = "Transaction Recorded \n" + keys + "\n" + values;
-  saveTransaction(newTransaction, path, readFile, writeFile, existFile);
+  saveTransaction(newTransaction, path, readFile, existFile, writeFile);
   return result;
 };
 

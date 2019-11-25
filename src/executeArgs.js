@@ -13,7 +13,7 @@ const pairArgs = function(args) {
   return pairs;
 };
 
-const executeArgs = function(args, path, readFile, writeFile, existFile, date) {
+const executeArgs = function(args, path, readFile, existFile, writeFile, date) {
   const operation = args[0];
   let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
   usage = usage + "node ./beverage.js --save --beverage beverageName";
@@ -29,8 +29,8 @@ const executeArgs = function(args, path, readFile, writeFile, existFile, date) {
         args.slice(1),
         path,
         readFile,
-        writeFile,
         existFile,
+        writeFile,
         date
       );
     }

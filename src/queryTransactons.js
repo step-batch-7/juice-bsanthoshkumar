@@ -14,18 +14,12 @@ const queryTransaction = function(beverageTransactions, empId) {
   return oldTransactions + "\n" + juices;
 };
 
-const queryBeverageTransaction = function(
-  args,
-  path,
-  readFile,
-  writeFile,
-  existFile
-) {
+const queryBeverageTransaction = function(args, path, readFile, existFile) {
   let keys = ["Employee ID", "Beverage", "Quantity", "Date"];
   if (!existFile(path)) {
     return "file not exists";
   }
-  let beverageTransactions = JSON.parse(readFile(path, "utf8"));
+  let beverageTransactions = JSON.parse(fs.readFileSync(path, "utf8"));
   return keys + queryTransaction(beverageTransactions, args[1]);
 };
 

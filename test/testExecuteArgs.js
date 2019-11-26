@@ -1,14 +1,18 @@
 const executeArgs = require("../src/executeArgs.js").executeArgs;
-const pairArgs = require("../src/executeArgs").pairArgs;
 const assert = require("assert");
 const fs = require("fs");
+
+let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
+usage =
+  usage +
+  "node ./beverage.js --save --beverage beverageName --empId employeeId --qty quantity";
 
 describe("executeArgs", function() {
   it("should return recorded transaction for save option", function() {
     args = ["--save", "--beverage", "Orange", "--empId", "11111", "--qty", "1"];
     path = "./beverageTransactions.json";
     const readFile = function(path, typeOfFile) {
-      return fs.readFileSync(path, typeOfFile);
+      return '{"table" : []}';
     };
 
     const writeFile = function(path, writingContents, typeOfFile) {
@@ -16,7 +20,7 @@ describe("executeArgs", function() {
     };
 
     const existFile = function(path) {
-      return fs.existsSync(path);
+      return true;
     };
 
     const date = function() {
@@ -36,17 +40,17 @@ describe("executeArgs", function() {
     args = ["--query", "--empId", "10000"];
     let expected = "Employee ID,Beverage,Quantity,Date\n";
     expected =
-      expected + "10000,Apple,1,2019-11-25T11:56:10.024Z\nTotal:1 juices";
+      expected +
+      "10000,Apple,1,2019-11-25T11:56:10.024Z\n10000,Apple,1,2019-11-26T06:29:59.482Z\nTotal:2 juices";
     const readFile = function(path, typeOfFile) {
-      return fs.readFileSync(path, typeOfFile);
+      return '{"table":[{"Employee ID":10000,"Beverage":"Apple","Quantity":1,"Date":"2019-11-25T11:56:10.024Z"},{"Employee ID":10000,"Beverage":"Apple","Quantity":1,"Date":"2019-11-26T06:29:59.482Z"}]}';
+    };
+    const existFile = function(path) {
+      return true;
     };
 
     const writeFile = function(path, writingContents, typeOfFile) {
       return "";
-    };
-
-    const existFile = function(path) {
-      return fs.existsSync(path);
     };
 
     const date = function() {

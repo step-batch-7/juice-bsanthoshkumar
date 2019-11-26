@@ -3,6 +3,11 @@ const saveBeverageTransaction = require("../src/saveTransactions")
 const assert = require("assert");
 const fs = require("fs");
 
+let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
+usage =
+  usage +
+  "node ./beverage.js --save --beverage beverageName --empId employeeId --qty quantity";
+
 describe("saveBeverageTransactions", function() {
   it("should return transaction recorded message", function() {
     const path = "./beverageTransactions.json";
@@ -12,7 +17,7 @@ describe("saveBeverageTransactions", function() {
       expected +
       "\n12345,Apple,1,Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
     const readFile = function(path, typeOfFile) {
-      return fs.readFileSync(path, typeOfFile);
+      return '{"table" : []}';
     };
 
     const writeFile = function(path, writingContents, typeOfFile) {
@@ -20,14 +25,22 @@ describe("saveBeverageTransactions", function() {
     };
 
     const existFile = function(path) {
-      return fs.existsSync(path);
+      return true;
     };
 
     const date = function() {
       return "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
     };
     assert.strictEqual(
-      saveBeverageTransaction(args, path, readFile, existFile, writeFile, date),
+      saveBeverageTransaction(
+        usage,
+        args,
+        path,
+        readFile,
+        existFile,
+        writeFile,
+        date
+      ),
       expected
     );
   });

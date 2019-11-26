@@ -1,23 +1,18 @@
 const validateSaveArgs = require("./validateArgs.js").validateSaveArgs;
 const validateQueryArgs = require("./validateArgs.js").validateQueryArgs;
+const pairArgs = require("../src/validateArgs").pairArgs;
 const saveBeverageTransaction = require("./saveTransactions")
   .saveBeverageTransaction;
 const queryBeverageTransaction = require("./queryTransactons")
   .queryBeverageTransaction;
 
-const pairArgs = function(args) {
-  let pairs = [];
-  for (let index = 0; index < args.length; index += 2) {
-    pairs.push([args[index], args[index + 1]]);
-  }
-  return pairs;
-};
+let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
+usage =
+  usage +
+  "node ./beverage.js --save --beverage beverageName --empId employeeId --qty quantity";
 
 const executeArgs = function(args, path, readFile, existFile, writeFile, date) {
   const operation = args[0];
-  let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
-  usage = usage + "node ./beverage.js --save --beverage beverageName";
-  usage = usage + " --empId employeeId --qty quantity";
   const features = {
     "--save": { "--save": validateSaveArgs, true: saveBeverageTransaction },
     "--query": { "--query": validateQueryArgs, true: queryBeverageTransaction }
@@ -26,6 +21,7 @@ const executeArgs = function(args, path, readFile, existFile, writeFile, date) {
     const pairedArgs = pairArgs(args.slice(1));
     if (pairedArgs.every(features[operation][operation])) {
       return features[operation][true](
+        usage,
         args.slice(1),
         path,
         readFile,
@@ -39,4 +35,4 @@ const executeArgs = function(args, path, readFile, existFile, writeFile, date) {
 };
 
 exports.executeArgs = executeArgs;
-exports.pairArgs = pairArgs;
+module.exports.usage = usage;

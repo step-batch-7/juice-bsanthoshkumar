@@ -1,6 +1,7 @@
 const isNumber = require("../src/validateArgs").isNumber;
 const validateSaveArgs = require("../src/validateArgs").validateSaveArgs;
 const validateQueryArgs = require("../src/validateArgs").validateQueryArgs;
+const pairArgs = require("../src/executeArgs").pairArgs;
 const assert = require("assert");
 
 describe("isNumber", function() {

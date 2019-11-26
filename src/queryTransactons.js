@@ -7,20 +7,31 @@ const queryTransaction = function(beverageTransactions, empId) {
     if (beverageTransactions["table"][index]["Employee ID"] == empId) {
       juices += beverageTransactions["table"][index]["Quantity"];
       transactionValues = Object.values(beverageTransactions["table"][index]);
-      oldTransactions.push("\n" + transactionValues);
+      oldTransactions.push(transactionValues);
     }
   }
   juices = "Total:" + juices + " juices";
-  return oldTransactions + "\n" + juices;
+  return oldTransactions.join("\n") + "\n" + juices;
 };
 
-const queryBeverageTransaction = function(args, path, readFile, existFile) {
+const queryBeverageTransaction = function(
+  usage,
+  args,
+  path,
+  readFile,
+  existFile
+) {
   let keys = ["Employee ID", "Beverage", "Quantity", "Date"];
+  if (args.length != 2) {
+    return usage;
+  }
   if (!existFile(path)) {
     return "file not exists";
   }
-  let beverageTransactions = JSON.parse(fs.readFileSync(path, "utf8"));
-  return keys + queryTransaction(beverageTransactions, args[1]);
+  let beverageTransactions = JSON.parse(
+    readFile(path, "utf8") || '{ "table": [] }'
+  );
+  return keys + "\n" + queryTransaction(beverageTransactions, args[1]);
 };
 
 exports.queryBeverageTransaction = queryBeverageTransaction;

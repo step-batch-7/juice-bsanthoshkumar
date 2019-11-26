@@ -8,7 +8,7 @@ const saveTransaction = function(
   writeFile
 ) {
   let beverageTransactions = { table: [] };
-  if (!existFile(path)) {
+  if (!existFile(path) || readFile(path, "utf8") == "") {
     writeFile(path, JSON.stringify(beverageTransactions), "utf8");
   }
   beverageTransactions = JSON.parse(readFile(path, "utf8"));
@@ -17,6 +17,7 @@ const saveTransaction = function(
 };
 
 const saveBeverageTransaction = function(
+  usage,
   args,
   path,
   readFile,
@@ -24,6 +25,9 @@ const saveBeverageTransaction = function(
   writeFile,
   date
 ) {
+  if (args.length != 6) {
+    return usage;
+  }
   const newTransaction = {
     "Employee ID": +args[3],
     Beverage: args[1],

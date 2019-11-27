@@ -34,9 +34,10 @@ const getOptionValues = function(optionValues, optionPair) {
 
 const getValidArgs = function(args) {
   let argumentPairs = [];
-  let options = { "--save": validateSaveArgs, "--query": validateQueryArgs };
+  const options = { "--save": validateSaveArgs, "--query": validateQueryArgs };
+  const isOption = options[args[0]] != undefined;
   argumentPairs = pairArgs(args.slice(1));
-  if (argumentPairs.every(options[args[0]])) {
+  if (isOption && argumentPairs.every(options[args[0]])) {
     return argumentPairs.reduce(getOptionValues, []);
   }
   return false;

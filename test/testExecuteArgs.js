@@ -62,4 +62,17 @@ describe("executeArgs", function() {
       expected
     );
   });
+
+  it("should return usage for invalid args", function() {
+    const args = [
+      "--save",
+      "--beverage",
+      "12345",
+      "--empId",
+      "Orange",
+      "--qty",
+      "1"
+    ];
+    assert.strictEqual(executeArgs(args, path), usage);
+  });
 });

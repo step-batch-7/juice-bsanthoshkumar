@@ -22,7 +22,7 @@ const queryBeverageTransaction = function(
   existFile
 ) {
   let keys = ["Employee ID", "Beverage", "Quantity", "Date"];
-  if (args.length != 2) {
+  if (args.length != 1) {
     return usage;
   }
   if (!existFile(path)) {
@@ -31,7 +31,7 @@ const queryBeverageTransaction = function(
   let beverageTransactions = JSON.parse(
     readFile(path, "utf8") || '{ "table": [] }'
   );
-  return keys + "\n" + queryTransaction(beverageTransactions, args[1]);
+  return keys + "\n" + queryTransaction(beverageTransactions, args[0]);
 };
 
 exports.queryBeverageTransaction = queryBeverageTransaction;

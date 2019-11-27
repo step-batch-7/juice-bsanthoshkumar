@@ -11,7 +11,7 @@ usage =
 describe("saveBeverageTransactions", function() {
   it("should return transaction recorded message", function() {
     const path = "./beverageTransactions.json";
-    const args = ["--beverage", "Apple", "--empId", "12345", "--qty", "1"];
+    const args = ["12345", "Apple", "1"];
     let expected = "Transaction Recorded \nEmployee ID,Beverage,Quantity,Date";
     expected =
       expected +

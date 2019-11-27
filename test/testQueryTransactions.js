@@ -11,7 +11,7 @@ usage =
 describe("queryBeverageTransactions", function() {
   it("should return employee past beverage details", function() {
     const path = "./beverageTransactions.json";
-    const args = ["--empId", "10000"];
+    const args = ["10000"];
     let expected = "Employee ID,Beverage,Quantity,Date\n";
     expected =
       expected + "10000,Apple,3,2019-11-25T11:56:10.024Z\nTotal:3 juices";

@@ -25,13 +25,13 @@ const saveBeverageTransaction = function(
   writeFile,
   date
 ) {
-  if (args.length != 6) {
+  if (args.length != 3) {
     return usage;
   }
   const newTransaction = {
-    "Employee ID": +args[3],
+    "Employee ID": +args[0],
     Beverage: args[1],
-    Quantity: +args[5],
+    Quantity: +args[2],
     Date: date()
   };
   const keys = Object.keys(newTransaction);

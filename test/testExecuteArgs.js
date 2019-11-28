@@ -26,13 +26,15 @@ describe("executeArgs", function() {
     const date = function() {
       return "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
     };
+    const fileSys = {
+      readFile: readFile,
+      writeFile: writeFile,
+      existFile: existFile
+    };
     let result =
-      "Transaction Recorded \nEmployee ID,Beverage,Quantity,Date\n11111,Orange,1,";
+      "Transaction Recorded:\nEmployee ID,Beverage,Quantity,Date\n11111,Orange,1,";
     result = result + "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
-    assert.strictEqual(
-      executeArgs(args, path, readFile, existFile, writeFile, date),
-      result
-    );
+    assert.strictEqual(executeArgs(args, path, fileSys, date), result);
   });
 
   it("should return past employee beverage details", function() {
@@ -43,7 +45,7 @@ describe("executeArgs", function() {
       expected +
       "10000,Apple,1,2019-11-25T11:56:10.024Z\n10000,Apple,1,2019-11-26T06:29:59.482Z\nTotal:2 juices";
     const readFile = function(path, typeOfFile) {
-      return '{"table":[{"Employee ID":10000,"Beverage":"Apple","Quantity":1,"Date":"2019-11-25T11:56:10.024Z"},{"Employee ID":10000,"Beverage":"Apple","Quantity":1,"Date":"2019-11-26T06:29:59.482Z"}]}';
+      return '{"table":[{"employeeId":10000,"beverage":"Apple","quantity":1,"date":"2019-11-25T11:56:10.024Z"},{"employeeId":10000,"beverage":"Apple","quantity":1,"date":"2019-11-26T06:29:59.482Z"}]}';
     };
     const existFile = function(path) {
       return true;
@@ -56,11 +58,12 @@ describe("executeArgs", function() {
     const date = function() {
       return "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
     };
-
-    assert.strictEqual(
-      executeArgs(args, path, readFile, existFile, writeFile, date),
-      expected
-    );
+    const fileSys = {
+      readFile: readFile,
+      writeFile: writeFile,
+      existFile: existFile
+    };
+    assert.strictEqual(executeArgs(args, path, fileSys, date), expected);
   });
 
   it("should return usage for invalid args", function() {

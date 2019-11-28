@@ -1,37 +1,47 @@
 const fs = require("fs");
 
-const queryTransaction = function(beverageTransactions, empId) {
-  let oldTransactions = [];
-  let juices = 0;
-  for (index = 0; index < beverageTransactions.table.length; index++) {
-    if (beverageTransactions["table"][index]["Employee ID"] == empId) {
-      juices += beverageTransactions["table"][index]["Quantity"];
-      transactionValues = Object.values(beverageTransactions["table"][index]);
-      oldTransactions.push(transactionValues);
-    }
-  }
-  juices = "Total:" + juices + " juices";
-  return oldTransactions.join("\n") + "\n" + juices;
+const getTransactionsOnEmpId = function(empId) {
+  return function(transaction) {
+    return transaction.employeeId == +empId;
+  };
 };
 
-const queryBeverageTransaction = function(
-  usage,
-  args,
-  path,
-  readFile,
-  existFile
-) {
-  let keys = ["Employee ID", "Beverage", "Quantity", "Date"];
-  if (args.length != 1) {
-    return usage;
-  }
-  if (!existFile(path)) {
+const getTransactionsOnBeverage = function(beverage) {
+  return function(transaction) {
+    return transaction.beverage == beverage;
+  };
+};
+
+const getTransactionsOnDate = function(date) {
+  return function(transaction) {
+    return transaction.date.slice(0, 10) == date;
+  };
+};
+
+const queryTransaction = function(beverageTransactions, args) {
+  let oldTransactions = beverageTransactions.table;
+  let isEmpIdDefined =
+    args[0] && oldTransactions.filter(getTransactionsOnEmpId(args[0]));
+  oldTransactions = isEmpIdDefined || oldTransactions;
+
+  let isBeverageDefined =
+    args[1] && oldTransactions.filter(getTransactionsOnBeverage(args[1]));
+  oldTransactions = isBeverageDefined || oldTransactions;
+
+  let isDateDefined =
+    args[2] && oldTransactions.filter(getTransactionsOnDate(args[2]));
+  return oldTransactions;
+};
+
+const queryBeverageTransaction = function(usage, args, path, fileSys) {
+  if (!fileSys.existFile(path)) {
     return "file not exists";
   }
   let beverageTransactions = JSON.parse(
-    readFile(path, "utf8") || '{ "table": [] }'
+    fileSys.readFile(path, "utf8") || '{ "table": [] }'
   );
-  return keys + "\n" + queryTransaction(beverageTransactions, args[0]);
+  let oldTransactions = queryTransaction(beverageTransactions, args);
+  return oldTransactions;
 };
 
 exports.queryBeverageTransaction = queryBeverageTransaction;

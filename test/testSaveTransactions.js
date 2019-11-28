@@ -12,10 +12,12 @@ describe("saveBeverageTransactions", function() {
   it("should return transaction recorded message", function() {
     const path = "./beverageTransactions.json";
     const args = ["12345", "Apple", "1"];
-    let expected = "Transaction Recorded \nEmployee ID,Beverage,Quantity,Date";
-    expected =
-      expected +
-      "\n12345,Apple,1,Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
+    let expected = [
+      12345,
+      "Apple",
+      1,
+      "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)"
+    ];
     const readFile = function(path, typeOfFile) {
       return '{"table" : []}';
     };
@@ -27,20 +29,16 @@ describe("saveBeverageTransactions", function() {
     const existFile = function(path) {
       return true;
     };
-
+    const fileSys = {
+      readFile: readFile,
+      writeFile: writeFile,
+      existFile: existFile
+    };
     const date = function() {
       return "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
     };
-    assert.strictEqual(
-      saveBeverageTransaction(
-        usage,
-        args,
-        path,
-        readFile,
-        existFile,
-        writeFile,
-        date
-      ),
+    assert.deepStrictEqual(
+      saveBeverageTransaction(usage, args, path, fileSys, date),
       expected
     );
   });
@@ -48,10 +46,12 @@ describe("saveBeverageTransactions", function() {
   it("should return transaction recorded message for non existing file", function() {
     const path = "./beverageTransactions.json";
     const args = ["12345", "Apple", "1"];
-    let expected = "Transaction Recorded \nEmployee ID,Beverage,Quantity,Date";
-    expected =
-      expected +
-      "\n12345,Apple,1,Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
+    let expected = [
+      12345,
+      "Apple",
+      1,
+      "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)"
+    ];
     const readFile = function(path, typeOfFile) {
       return '{"table" : []}';
     };
@@ -63,26 +63,22 @@ describe("saveBeverageTransactions", function() {
     const existFile = function(path) {
       return false;
     };
-
+    const fileSys = {
+      readFile: readFile,
+      writeFile: writeFile,
+      existFile: existFile
+    };
     const date = function() {
       return "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)";
     };
-    assert.strictEqual(
-      saveBeverageTransaction(
-        usage,
-        args,
-        path,
-        readFile,
-        existFile,
-        writeFile,
-        date
-      ),
+    assert.deepStrictEqual(
+      saveBeverageTransaction(usage, args, path, fileSys, date),
       expected
     );
   });
 
   it("should return usage for invalid args", function() {
-    const args = ["Apple", "1"];
+    const args = [, "Apple", "1"];
     assert.strictEqual(saveBeverageTransaction(usage, args), usage);
   });
 });

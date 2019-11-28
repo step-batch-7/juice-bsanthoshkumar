@@ -1,19 +1,27 @@
 const isNumber = function(text) {
-  return Number.isInteger(+text);
+  return Number.isInteger(+text) && +text > 0;
 };
 
 const validateSaveArgs = function(args) {
-  if (args[0] == "--qty" || args[0] == "--empId") {
-    return isNumber(args[1]) && +args[1] > 0;
-  }
-  if (args[0] == "--beverage") {
-    return !isNumber(args[1]);
-  }
-  return false;
+  const options = {
+    "--qty": isNumber,
+    "--empId": isNumber,
+    "--beverage": isNaN
+  };
+  const isKey = ["--qty", "--empId", "--beverage"].includes(args[0]);
+  return isKey && options[args[0]](args[1]);
 };
 
 const validateQueryArgs = function(args) {
-  return args[0] == "--empId" && isNumber(+args[1]);
+  const options = {
+    "--date": function() {
+      return true;
+    },
+    "--empId": isNumber,
+    "--beverage": isNaN
+  };
+  const isKey = ["--date", "--empId", "--beverage"].includes(args[0]);
+  return isKey && options[args[0]](args[1]);
 };
 
 const pairArgs = function(args) {
@@ -24,8 +32,16 @@ const pairArgs = function(args) {
   return pairs;
 };
 
-const getOptionValues = function(optionValues, optionPair) {
+const getSaveValues = function(optionValues, optionPair) {
   const index = { "--empId": 0, "--beverage": 1, "--qty": 2 };
+  const option = optionPair[0];
+  let value = optionPair[1];
+  optionValues[index[option]] = value;
+  return optionValues;
+};
+
+const getQueryValues = function(optionValues, optionPair) {
+  const index = { "--empId": 0, "--beverage": 1, "--date": 2 };
   const option = optionPair[0];
   let value = optionPair[1];
   optionValues[index[option]] = value;
@@ -34,11 +50,15 @@ const getOptionValues = function(optionValues, optionPair) {
 
 const getValidArgs = function(args) {
   let argumentPairs = [];
-  const options = { "--save": validateSaveArgs, "--query": validateQueryArgs };
-  const isOption = options[args[0]] != undefined;
+  const option = args[0];
+  const features = {
+    "--save": { 0: validateSaveArgs, 1: getSaveValues },
+    "--query": { 0: validateQueryArgs, 1: getQueryValues }
+  };
+  const isKey = ["--save", "--query"].includes(option);
   argumentPairs = pairArgs(args.slice(1));
-  if (isOption && argumentPairs.every(options[args[0]])) {
-    return argumentPairs.reduce(getOptionValues, []);
+  if (isKey && argumentPairs.every(features[option][0])) {
+    return argumentPairs.reduce(features[option][1], []);
   }
   return false;
 };
@@ -47,5 +67,6 @@ exports.validateSaveArgs = validateSaveArgs;
 exports.validateQueryArgs = validateQueryArgs;
 exports.isNumber = isNumber;
 exports.pairArgs = pairArgs;
-exports.getOptionValues = getOptionValues;
+exports.getSaveValues = getSaveValues;
 exports.getValidArgs = getValidArgs;
+exports.getQueryValues = getQueryValues;

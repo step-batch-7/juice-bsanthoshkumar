@@ -5,7 +5,8 @@ const queryBeverageTransaction = require("./queryTransactons")
   .queryBeverageTransaction;
 
 const usage = function() {
-  let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
+  let usage =
+    "usage:\n\tnode ./beverage.js --query --empId employee Id --date date --beverage beveragename\n\t";
   usage =
     usage +
     "node ./beverage.js --save --beverage beverageName --empId employeeId --qty quantity";

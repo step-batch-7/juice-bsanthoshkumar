@@ -2,7 +2,8 @@ const executeArgs = require("../src/executeArgs.js").executeArgs;
 const assert = require("assert");
 const fs = require("fs");
 
-let usage = "usage:\n\tnode ./beverage.js --query --empId employee Id\n\t";
+let usage =
+  "usage:\n\tnode ./beverage.js --query --empId employee Id --date date --beverage beveragename\n\t";
 usage =
   usage +
   "node ./beverage.js --save --beverage beverageName --empId employeeId --qty quantity";

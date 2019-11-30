@@ -22,15 +22,16 @@ const executeArgs = function(args, path, fileSys, date) {
   };
   const validArgs =
     ["--save", "--query"].includes(option) && getValidArgs(args);
-  const isValid = validArgs && true;
-  const result = features[isValid && option]["operation"](
+  const isValid = validArgs && option;
+  const result = features[isValid]["operation"](
     usage,
     validArgs,
     path,
     fileSys,
     date
   );
-  return features[isValid && option]["msg"](result);
+  const isUsage = result == usage && result();
+  return isUsage || features[isValid]["msg"](result);
 };
 
 const getSavePattern = function(values) {

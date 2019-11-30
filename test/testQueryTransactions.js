@@ -106,7 +106,7 @@ describe("queryBeverageTransactions", function() {
   it("should return file not exists message for non existing file", function() {
     const path = "./beverageTransactions.json";
     const args = ["10000", ,];
-    let expected = "file not exists";
+    let expected = [];
     const readFile = function(path, typeOfFile) {
       return '{"table":[{"employeeId":10000,"beverage":"Apple","quantity":3,"date":"2019-11-25T11:56:10.024Z"}]}';
     };

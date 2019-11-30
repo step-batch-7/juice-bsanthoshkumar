@@ -35,6 +35,7 @@ const executeArgs = function(args, path, fileSys, date) {
 
 const getSavePattern = function(values) {
   const keys = ["Employee ID", "Beverage", "Quantity", "Date"];
+  values[3] = values[3].toJSON();
   return `Transaction Recorded:\n${keys}\n${values}`;
 };
 
@@ -53,10 +54,10 @@ const getValues = function(transaction) {
 };
 
 const getQueryPattern = function(oldTransactions) {
-  const keys = ["Employee ID", "Beverage", "Quantity", "Date"];
+  const keys = ["Employee ID", " Beverage", " Quantity", " Date"];
   let juices = oldTransactions.reduce(totalJuicesCount, 0);
   oldTransactions = oldTransactions.map(getValues);
-  juices = "Total:" + juices + " juices";
+  juices = "Total: " + juices + " Juices";
   return `${keys}\n${oldTransactions.join("\n")}\n${juices}`;
 };
 

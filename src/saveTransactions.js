@@ -20,7 +20,12 @@ const saveBeverageTransaction = function(usage, args, path, fileSys, date) {
     quantity: +args[2],
     date: date()
   };
-  const values = Object.values(newTransaction);
+  const values = [
+    newTransaction.employeeId,
+    newTransaction.beverage,
+    newTransaction.quantity,
+    newTransaction.date
+  ];
   saveTransaction(newTransaction, path, fileSys);
   return values;
 };

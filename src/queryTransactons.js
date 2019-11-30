@@ -35,7 +35,7 @@ const queryTransaction = function(beverageTransactions, args) {
 
 const queryBeverageTransaction = function(usage, args, path, fileSys) {
   if (!fileSys.existFile(path)) {
-    return "file not exists";
+    return [];
   }
   let beverageTransactions = JSON.parse(
     fileSys.readFile(path, "utf8") || '{ "table": [] }'

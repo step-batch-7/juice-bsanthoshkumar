@@ -16,22 +16,16 @@ const usage = function() {
 const executeArgs = function(args, path, fileSys, date) {
   const option = args[0];
   const features = {
-    "--save": { operation: saveBeverageTransaction, msg: getSavePattern },
-    "--query": { operation: queryBeverageTransaction, msg: getQueryPattern },
-    false: { operation: usage, msg: usage }
+    "--save": [saveBeverageTransaction, getSavePattern],
+    "--query": [queryBeverageTransaction, getQueryPattern],
+    false: [usage, usage]
   };
   const validArgs =
     ["--save", "--query"].includes(option) && getValidArgs(args);
   const isValid = validArgs && option;
-  const result = features[isValid]["operation"](
-    usage,
-    validArgs,
-    path,
-    fileSys,
-    date
-  );
+  const result = features[isValid][0](usage, validArgs, path, fileSys, date);
   const isUsage = result == usage && result();
-  return isUsage || features[isValid]["msg"](result);
+  return isUsage || features[isValid][1](result);
 };
 
 const getSavePattern = function(values) {

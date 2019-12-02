@@ -52,15 +52,13 @@ const getValidArgs = function(args) {
   let argumentPairs = [];
   const option = args[0];
   const features = {
-    "--save": { 0: validateSaveArgs, 1: getSaveValues },
-    "--query": { 0: validateQueryArgs, 1: getQueryValues }
+    "--save": [validateSaveArgs, getSaveValues],
+    "--query": [validateQueryArgs, getQueryValues]
   };
   const isKey = ["--save", "--query"].includes(option);
   argumentPairs = pairArgs(args.slice(1));
-  if (isKey && argumentPairs.every(features[option][0])) {
-    return argumentPairs.reduce(features[option][1], []);
-  }
-  return false;
+  isValidPairs = isKey && argumentPairs.every(features[option][0]);
+  return isValidPairs && argumentPairs.reduce(features[option][1], []);
 };
 
 exports.validateSaveArgs = validateSaveArgs;

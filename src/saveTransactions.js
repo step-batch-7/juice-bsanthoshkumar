@@ -11,7 +11,7 @@ const saveTransaction = function(newTransaction, path, fileSys) {
 };
 
 const saveBeverageTransaction = function(usage, args, path, fileSys, date) {
-  if (args.includes(undefined)) {
+  if (args.includes(undefined) || args.length != 3) {
     return usage;
   }
   const newTransaction = {

@@ -83,4 +83,9 @@ describe("executeArgs", function() {
     ];
     assert.strictEqual(executeArgs(args, path), usage);
   });
+
+  it("should return usage for invalid save args", function() {
+    const args = ["--save", "--beverage", "Orange", "--qty", "1"];
+    assert.strictEqual(executeArgs(args, path), usage);
+  });
 });

@@ -53,7 +53,7 @@ describe("saveBeverageTransactions", function() {
       "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)"
     ];
     const readFile = function(path, typeOfFile) {
-      return '{"table" : []}';
+      throw "file not exists";
     };
 
     const writeFile = function(path, writingContents, typeOfFile) {

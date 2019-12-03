@@ -79,12 +79,6 @@ describe("queryBeverageTransactions", function() {
         date: "2019-11-25T11:56:10.024Z",
         employeeId: 10000,
         quantity: 3
-      },
-      {
-        beverage: "Apple",
-        date: "2019-11-26T06:29:59.482Z",
-        employeeId: 11111,
-        quantity: 1
       }
     ];
     const readFile = function(path, typeOfFile) {
@@ -108,7 +102,7 @@ describe("queryBeverageTransactions", function() {
     const args = ["10000", ,];
     let expected = [];
     const readFile = function(path, typeOfFile) {
-      return '{"table":[{"employeeId":10000,"beverage":"Apple","quantity":3,"date":"2019-11-25T11:56:10.024Z"}]}';
+      throw "file not exists";
     };
     const existFile = function(path) {
       return false;

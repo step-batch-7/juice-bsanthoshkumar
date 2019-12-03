@@ -52,7 +52,8 @@ const getQueryPattern = function(oldTransactions) {
   const keys = ["Employee ID", " Beverage", " Quantity", " Date"];
   let juices = oldTransactions.reduce(totalJuicesCount, 0);
   oldTransactions = oldTransactions.map(getValues);
-  juices = "Total: " + juices + " Juices";
+  juiceCountSuffix = juices == 1 ? "Juice" : "Juices";
+  juices = `Total: ${juices} ${juiceCountSuffix}`;
   return `${keys}\n${oldTransactions.join("\n")}\n${juices}`;
 };
 

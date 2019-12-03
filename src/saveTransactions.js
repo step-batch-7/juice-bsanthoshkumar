@@ -2,10 +2,9 @@ const fs = require("fs");
 
 const saveTransaction = function(newTransaction, path, fileSys) {
   let beverageTransactions = { table: [] };
-  if (!fileSys.existFile(path) || fileSys.readFile(path, "utf8") == "") {
-    fileSys.writeFile(path, JSON.stringify(beverageTransactions), "utf8");
-  }
-  beverageTransactions = JSON.parse(fileSys.readFile(path, "utf8"));
+  try {
+    beverageTransactions = JSON.parse(fileSys.readFile(path, "utf8"));
+  } catch (e) {}
   beverageTransactions.table.push(newTransaction);
   fileSys.writeFile(path, JSON.stringify(beverageTransactions), "utf8");
 };

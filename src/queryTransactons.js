@@ -30,16 +30,20 @@ const queryTransaction = function(beverageTransactions, args) {
 
   let isDateDefined =
     args[2] && oldTransactions.filter(getTransactionsOnDate(args[2]));
+  oldTransactions = isDateDefined || oldTransactions;
+
   return oldTransactions;
 };
 
 const queryBeverageTransaction = function(usage, args, path, fileSys) {
-  if (!fileSys.existFile(path)) {
-    return [];
+  let beverageTransactions = [];
+  try {
+    beverageTransactions = JSON.parse(
+      fileSys.readFile(path, "utf8") || '{ "table": [] }'
+    );
+  } catch (e) {
+    return beverageTransactions;
   }
-  let beverageTransactions = JSON.parse(
-    fileSys.readFile(path, "utf8") || '{ "table": [] }'
-  );
   let oldTransactions = queryTransaction(beverageTransactions, args);
   return oldTransactions;
 };

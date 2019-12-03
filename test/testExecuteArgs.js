@@ -40,7 +40,7 @@ describe("executeArgs", function() {
     assert.strictEqual(executeArgs(args, path, fileSys, date), result);
   });
 
-  it("should return past employee beverage details", function() {
+  it("should return past employee beverage details based on employee ID", function() {
     path = "./beverageTransactions.json";
     args = ["--query", "--empId", "10000"];
     let expected = "Employee ID, Beverage, Quantity, Date\n";
@@ -70,7 +70,65 @@ describe("executeArgs", function() {
     };
     assert.strictEqual(executeArgs(args, path, fileSys, date), expected);
   });
+  it("should return past employee beverage details based on date", function() {
+    path = "./beverageTransactions.json";
+    args = ["--query", "--date", "2019-11-25"];
+    let expected = "Employee ID, Beverage, Quantity, Date\n";
+    expected =
+      expected + "10000,Apple,1,2019-11-25T11:56:10.024Z\nTotal: 1 Juice";
+    const readFile = function(path, typeOfFile) {
+      return '{"table":[{"employeeId":10000,"beverage":"Apple","quantity":1,"date":"2019-11-25T11:56:10.024Z"},{"employeeId":10000,"beverage":"Apple","quantity":1,"date":"2019-11-26T06:29:59.482Z"}]}';
+    };
+    const existFile = function(path) {
+      return true;
+    };
 
+    const writeFile = function(path, writingContents, typeOfFile) {
+      return "";
+    };
+
+    const date = function() {
+      return new Date(
+        "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)"
+      );
+    };
+    const fileSys = {
+      readFile: readFile,
+      writeFile: writeFile,
+      existFile: existFile
+    };
+    assert.strictEqual(executeArgs(args, path, fileSys, date), expected);
+  });
+
+  it("should return past employee beverage details based on beverage", function() {
+    path = "./beverageTransactions.json";
+    args = ["--query", "--beverage", "Apple"];
+    let expected = "Employee ID, Beverage, Quantity, Date\n";
+    expected =
+      expected + "10000,Apple,1,2019-11-26T06:29:59.482Z\nTotal: 1 Juice";
+    const readFile = function(path, typeOfFile) {
+      return '{"table":[{"employeeId":10000,"beverage":"Orange","quantity":1,"date":"2019-11-25T11:56:10.024Z"},{"employeeId":10000,"beverage":"Apple","quantity":1,"date":"2019-11-26T06:29:59.482Z"}]}';
+    };
+    const existFile = function(path) {
+      return true;
+    };
+
+    const writeFile = function(path, writingContents, typeOfFile) {
+      return "";
+    };
+
+    const date = function() {
+      return new Date(
+        "Mon Nov 25 2019 15:53:13 GMT+0530 (India Standard Time)"
+      );
+    };
+    const fileSys = {
+      readFile: readFile,
+      writeFile: writeFile,
+      existFile: existFile
+    };
+    assert.strictEqual(executeArgs(args, path, fileSys, date), expected);
+  });
   it("should return usage for invalid args", function() {
     const args = [
       "--save",
